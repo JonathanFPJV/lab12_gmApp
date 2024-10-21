@@ -19,9 +19,14 @@ import com.google.maps.android.compose.Marker
 
 @Composable
 fun MapScreen() {
-    val ArequipaLocation = LatLng(-16.4040102, -71.559611) // Arequipa, Perú
+    val locations = listOf(
+        LatLng(-16.433415,-71.5442652), // JLByR
+        LatLng(-16.4205151,-71.4945209), // Paucarpata
+        LatLng(-16.3524187,-71.5675994) // Zamacola
+    )
+
     val cameraPositionState = rememberCameraPositionState {
-        position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(ArequipaLocation, 12f)
+        position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(locations[0], 12f)
     }
 
 
@@ -36,11 +41,13 @@ fun MapScreen() {
             val smallMarkerIcon = Bitmap.createScaledBitmap(bitmap, 84, 84, false) // Redimensiona el bitmap
             val markerDescriptor = BitmapDescriptorFactory.fromBitmap(smallMarkerIcon)
             // Añadir marcador en Arequipa Perú
-            Marker(
-                state = rememberMarkerState(position = ArequipaLocation),
-                icon = markerDescriptor, // Icono personalizado
-                title = "Arequipa, Perú"
-            )
+            locations.forEach { location ->
+                Marker(
+                    state = rememberMarkerState(position = location),
+                    icon = markerDescriptor, // Icono personalizado
+                    title = "Arequipa, Perú"
+                )
+            }
 
         }
     }
