@@ -78,6 +78,7 @@ dependencies {
 
     // Widgets de Google Maps Compose
     implementation("com.google.maps.android:maps-compose-widgets:$mapsComposeVersion")
+    implementation(kotlin("script-runtime"))
 
 
 }

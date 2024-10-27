@@ -3,11 +3,16 @@ package com.example.lab12_gm
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +22,8 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.Polygon
 
@@ -29,12 +36,6 @@ fun MapScreen() {
         LatLng(-16.3524187,-71.5675994) // Zamacola
     )
     // Lista de coordenadas para los polígonos
-    val mallAventuraPolygon = listOf(
-        LatLng(-16.432292, -71.509145),
-        LatLng(-16.432757, -71.509626),
-        LatLng(-16.433013, -71.509310),
-        LatLng(-16.432566, -71.508853)
-    )
 
     val parqueLambramaniPolygon = listOf(
         LatLng(-16.422704, -71.530830),
@@ -54,12 +55,14 @@ fun MapScreen() {
         position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(locations[0], 12f)
     }
 
+    var mapType by remember { mutableStateOf(MapType.NORMAL) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Añadir GoogleMap al layout
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            properties = MapProperties(mapType = mapType)
         ) {
             val context = LocalContext.current
             val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.monicon)
@@ -80,15 +83,22 @@ fun MapScreen() {
                 fillColor = Color.Blue,
                 strokeWidth = 5f
             )
-            Polygon(
-                points = mallAventuraPolygon,
-                strokeColor = Color.Red,
-                fillColor = Color.Blue,
-                strokeWidth = 5f
-            )
 
         }
+
+        // Botones para cambiar el tipo de mapa
+        MapTypeButtons(onMapTypeChange = { newType -> mapType = newType })
     }
 
 
+}
+
+@Composable
+fun MapTypeButtons(onMapTypeChange: (MapType) -> Unit) {
+    Column {
+        Button(onClick = { onMapTypeChange(MapType.NORMAL) }) { Text("Normal") }
+        Button(onClick = { onMapTypeChange(MapType.HYBRID) }) { Text("Híbrido") }
+        Button(onClick = { onMapTypeChange(MapType.SATELLITE) }) { Text("Satélite") }
+        Button(onClick = { onMapTypeChange(MapType.TERRAIN) }) { Text("Terreno") }
+    }
 }
