@@ -17,7 +17,7 @@ import com.example.lab12_gm.ui.theme.Lab12_gmTheme
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContent {
-                MapScreen()
+                MapScreen(viewModel = MapViewModel())
             }
         }
     }

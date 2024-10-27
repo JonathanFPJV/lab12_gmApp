@@ -80,6 +80,9 @@ dependencies {
     implementation("com.google.maps.android:maps-compose-widgets:$mapsComposeVersion")
     implementation(kotlin("script-runtime"))
 
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
+
 
 }
 
